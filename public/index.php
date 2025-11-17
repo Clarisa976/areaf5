@@ -1,5 +1,6 @@
 <?php
 require_once __DIR__ . "/../vendor/autoload.php";
+
 use Dotenv\Dotenv;
 
 // initialize Dotenv to load environment variables from .env file
@@ -11,24 +12,11 @@ require_once __DIR__ . "/../config/db.php";
 
 // test the database connection
 try {
-    $stmt = $pdo->query("SELECT COUNT(*) AS total_posts FROM posts");
-    $result = $stmt->fetch();
-    $totalPosts = $result['total_posts'];
+    $sql = "SELECT post_number, location, occupation_type, name, weapons, zombie_types, observation FROM v_post_summary ORDER BY post_number, occupation_type";
+    $stmt = $pdo->query($sql);
+    $result = $stmt->fetchAll();
 } catch (\PDOException $e) {
     die("Database query failed: " . $e->getMessage());
 }
-
+require_once __DIR__ . '/../views/list.php';
 ?>
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AreaF5 - Test Técnico</title>
-</head>
-<body>
-    <h1>Área F5 - Test Técnico</h1>
-    <p>Conexión :D</p>
-    <p>Total de puestos: <?php echo $totalPosts; ?></p>
-</body>
-</html>

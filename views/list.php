@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AreaF5 - Test Técnico</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        h1 {
+            color: #333;
+            margin: 10px 0;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        th, td {
+            border: 1px solid #ccc;
+            padding: 8px;
+            text-align: center;
+        }
+        th {
+            background-color: #e4d0d0ff;
+        }
+    </style>
+</head>
+<body>
+    <h1>Puestos y amenazas</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>Puesto</th>
+                <th>Localización</th>
+                <th>Tipo de ocupación</th>
+                <th>Nombre</th>
+                <th>Armas</th>
+                <th>Tipo de zombie</th>
+                <th>Observaciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            <?php if (!empty($result)): ?>
+                <?php foreach ($result as $row): ?>
+                    <tr>
+                        <td><?= htmlspecialchars($row['post_number']) ?></td>
+                        <td><?= htmlspecialchars($row['location']) ?></td>
+                        <td><?= htmlspecialchars($row['occupation_type']) ?></td>
+                        <td><?= htmlspecialchars($row['name']) ?></td>
+                        <td><?= htmlspecialchars($row['weapons']) ?></td>
+                        <td><?= htmlspecialchars($row['zombie_types']) ?></td>
+                        <td><?= htmlspecialchars($row['observation']) ?></td>
+                    </tr>
+                <?php endforeach; ?>
+            <?php else: ?>
+                <tr>
+                    <td colspan="7">Añade algo primero uwu</td>
+                </tr>
+            <?php endif; ?>
+        </tbody>
+    </table>
+</body>
+</html>
