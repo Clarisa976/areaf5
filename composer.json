@@ -1,0 +1,19 @@
+{
+    "name": "claris/areaf5",
+    "description": "Seattle map technical test",
+    "type": "project",
+    "autoload": {
+        "psr-4": {
+            "Claris\\Areaf5\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Clarisa976",
+            "email": "clarisa21h@gmail.com"
+        }
+    ],
+    "require": {
+        "vlucas/phpdotenv": "^5.6"
+    }
+}
