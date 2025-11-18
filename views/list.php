@@ -128,18 +128,16 @@
                         <td><?= $row['zombie_types'] !== null ? htmlspecialchars($row['zombie_types']) : 'NULL' ?></td>
                         <td><?= $row['observation'] !== null && $row['observation'] !== '' ? htmlspecialchars($row['observation']) : 'NULL' ?></td>
                         <td>
-                            <div class="action-buttons">
-                                <form method="get" action="occupation_edit.php" style="margin: 0;">
-                                    <input type="hidden" name="id" value="<?php echo (int)$row['occupation_id']; ?>">
-                                    <button type="submit" class="btn-edit">Edit</button>
-                                </form>
-                                <form method="post" action="occupation_delete.php" style="margin: 0;"
-                                    onsubmit="return confirm('Do you really want to delete this occupation?');">
-                                    <input type="hidden" name="occupation_id"
-                                        value="<?php echo (int)$row['occupation_id']; ?>">
-                                    <button type="submit" name="delete" class="btn-delete">Delete</button>
-                                </form>
-                            </div>
+                            <form method="get" action="occupation_edit.php" style="display:inline-block;">
+                                <input type="hidden" name="id" value="<?php echo (int)$row['occupation_id']; ?>">
+                                <button type="submit">Edit</button>
+                            </form>
+                            <form method="post" action="occupation_delete.php"
+                                onsubmit="return confirm('Do you really want to delete this occupation?');">
+                                <input type="hidden" name="occupation_id"
+                                    value="<?php echo (int)$row['occupation_id']; ?>">
+                                <button type="submit" name="delete">Delete</button>
+                            </form>
                         </td>
                     </tr>
                 <?php endforeach; ?>
