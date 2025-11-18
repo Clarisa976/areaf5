@@ -18,9 +18,12 @@
 
         .actions {
             margin: 20px 0;
+            display: flex;
+            gap: 15px;
+            align-items: center;
         }
 
-        .actions button {
+        .btn-primary {
             background-color: #4CAF50;
             color: white;
             padding: 10px 20px;
@@ -30,8 +33,22 @@
             font-size: 16px;
         }
 
-        .actions button:hover {
+        .btn-primary:hover {
             background-color: #45a049;
+        }
+
+        .btn-export {
+            background-color: #FF9800;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        .btn-export:hover {
+            background-color: #e68900;
         }
 
         table {
@@ -53,22 +70,23 @@
 
         .action-buttons {
             display: flex;
-            gap: 5px;
+            gap: 8px;
             justify-content: center;
             align-items: center;
         }
 
-        .action-buttons button {
-            padding: 6px 12px;
-            border: none;
-            border-radius: 3px;
-            cursor: pointer;
-            font-size: 14px;
+        .action-buttons form {
+            margin: 0;
         }
 
         .btn-edit {
             background-color: #2196F3;
             color: white;
+            padding: 6px 12px;
+            border: none;
+            border-radius: 3px;
+            cursor: pointer;
+            font-size: 14px;
         }
 
         .btn-edit:hover {
@@ -78,6 +96,11 @@
         .btn-delete {
             background-color: #f44336;
             color: white;
+            padding: 6px 12px;
+            border: none;
+            border-radius: 3px;
+            cursor: pointer;
+            font-size: 14px;
         }
 
         .btn-delete:hover {
@@ -97,10 +120,13 @@
     <h1>Ellie's map :D</h1>
     <div class="actions">
         <form method="get" action="occupation_create.php">
-            <button type="submit">Create new occupation</button>
+            <button type="submit" class="btn-primary">Create new occupation</button>
         </form>
         <form method="get" action="export_csv.php">
-            <button type="submit">Export CSV</button>
+            <button type="submit" class="btn-export">Export CSV</button>
+        </form>
+        <form method="get" action="export_excel.php">
+            <button type="submit" class="btn-export">Export Excel</button>
         </form>
     </div>
 
@@ -131,16 +157,18 @@
                         <td><?= $row['zombie_types'] !== null ? htmlspecialchars($row['zombie_types']) : 'NULL' ?></td>
                         <td><?= $row['observation'] !== null && $row['observation'] !== '' ? htmlspecialchars($row['observation']) : 'NULL' ?></td>
                         <td>
-                            <form method="get" action="occupation_edit.php" style="display:inline-block;">
-                                <input type="hidden" name="id" value="<?php echo (int)$row['occupation_id']; ?>">
-                                <button type="submit">Edit</button>
-                            </form>
-                            <form method="post" action="occupation_delete.php"
-                                onsubmit="return confirm('Do you really want to delete this occupation?');">
-                                <input type="hidden" name="occupation_id"
-                                    value="<?php echo (int)$row['occupation_id']; ?>">
-                                <button type="submit" name="delete">Delete</button>
-                            </form>
+                            <div class="action-buttons">
+                                <form method="get" action="occupation_edit.php">
+                                    <input type="hidden" name="id" value="<?php echo (int)$row['occupation_id']; ?>">
+                                    <button type="submit" class="btn-edit">Edit</button>
+                                </form>
+                                <form method="post" action="occupation_delete.php"
+                                    onsubmit="return confirm('Do you really want to delete this occupation?');">
+                                    <input type="hidden" name="occupation_id"
+                                        value="<?php echo (int)$row['occupation_id']; ?>">
+                                    <button type="submit" name="delete" class="btn-delete">Delete</button>
+                                </form>
+                            </div>
                         </td>
                     </tr>
                 <?php endforeach; ?>
