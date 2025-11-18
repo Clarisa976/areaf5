@@ -2,7 +2,7 @@
 // load all summary rows from v_post_summary view
 function loadSummaryRows($pdo)
 {
-    $sql = "SELECT post_number, location, occupation_type, name, weapons, zombie_types, observation FROM v_post_summary ORDER BY post_number, occupation_type";
+    $sql = "SELECT occupation_id, post_number, location, occupation_type, name, weapons, zombie_types, observation FROM v_post_summary ORDER BY post_number, occupation_type";
     $stmt = $pdo->query($sql);
     return $stmt->fetchAll();
 }
@@ -84,4 +84,14 @@ function createOccupationGroup($pdo,$postId,$occupationType,$characterName,$weap
             }
         }
 }
+
+// delete occupation by id
+function deleteOccupation($pdo, $occupationId){
+    $sql = "DELETE FROM occupations WHERE id_occupations = :id";
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute([':id' => $occupationId]);
+
+    return $stmt->rowCount() > 0;
+}
+
 ?>

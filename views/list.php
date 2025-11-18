@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,32 +10,38 @@
             font-family: Arial, sans-serif;
             margin: 20px;
         }
+
         h1 {
             color: #333;
             margin: 10px 0;
         }
+
         table {
             width: 100%;
             border-collapse: collapse;
             margin-top: 20px;
         }
-        th, td {
+
+        th,
+        td {
             border: 1px solid #ccc;
             padding: 8px;
             text-align: center;
         }
+
         th {
             background-color: #e4d0d0ff;
         }
     </style>
 </head>
+
 <body>
     <h1>Ellie's map :D</h1>
-<div class="actions">
-    <form method="get" action="occupation_create.php">
-        <button type="submit">Create new occupation</button>
-    </form>
-</div>
+    <div class="actions">
+        <form method="get" action="occupation_create.php">
+            <button type="submit">Create new occupation</button>
+        </form>
+    </div>
 
     <table>
         <thead>
@@ -46,6 +53,7 @@
                 <th>Armas</th>
                 <th>Tipo de zombie</th>
                 <th>Observaciones</th>
+                <th>Acciones</th>
             </tr>
         </thead>
         <tbody>
@@ -59,6 +67,14 @@
                         <td><?= $row['weapons'] !== null ? htmlspecialchars($row['weapons']) : 'NULL' ?></td>
                         <td><?= $row['zombie_types'] !== null ? htmlspecialchars($row['zombie_types']) : 'NULL' ?></td>
                         <td><?= $row['observation'] !== null && $row['observation'] !== '' ? htmlspecialchars($row['observation']) : 'NULL' ?></td>
+                        <td>
+                            <form method="post" action="occupation_delete.php"
+                                onsubmit="return confirm('Do you really want to delete this occupation?');">
+                                <input type="hidden" name="occupation_id"
+                                    value="<?php echo (int)$row['occupation_id']; ?>">
+                                <button type="submit" name="delete">Delete</button>
+                            </form>
+                        </td>
                     </tr>
                 <?php endforeach; ?>
             <?php else: ?>
@@ -69,4 +85,5 @@
         </tbody>
     </table>
 </body>
+
 </html>
