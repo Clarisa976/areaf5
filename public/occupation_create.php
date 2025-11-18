@@ -78,6 +78,15 @@ if (isset($_POST["save"]) && !isset($_POST["update_type"])) {
     if ($occupationType === "WLF") {
         if ($characterName === "") {
             addError($errors, "character_name", "Character name is required for WLF occupation.");
+        } else {
+            try {
+                $existingLocation = wlfCharacterExistsInAnotherPost($pdo, $characterName);
+                if ($existingLocation !== null) {
+                    addError($errors, "character_name", "This character is already assigned to " . $existingLocation . ". Each WLF character can only be in one post.");
+                }
+            } catch (PDOException $e) {
+                addError($errors, "general", "Error checking WLF character: " . $e->getMessage());
+            }
         }
     }
 
