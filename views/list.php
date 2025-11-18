@@ -29,7 +29,13 @@
     </style>
 </head>
 <body>
-    <h1>Puestos y amenazas</h1>
+    <h1>Ellie's map :D</h1>
+<div class="actions">
+    <form method="get" action="occupation_create.php">
+        <button type="submit">Create new occupation</button>
+    </form>
+</div>
+
     <table>
         <thead>
             <tr>
@@ -49,15 +55,15 @@
                         <td><?= htmlspecialchars($row['post_number']) ?></td>
                         <td><?= htmlspecialchars($row['location']) ?></td>
                         <td><?= htmlspecialchars($row['occupation_type']) ?></td>
-                        <td><?= htmlspecialchars($row['name']) ?></td>
-                        <td><?= htmlspecialchars($row['weapons']) ?></td>
-                        <td><?= htmlspecialchars($row['zombie_types']) ?></td>
-                        <td><?= htmlspecialchars($row['observation']) ?></td>
+                        <td><?= $row['name'] !== null ? htmlspecialchars($row['name']) : 'NULL' ?></td>
+                        <td><?= $row['weapons'] !== null ? htmlspecialchars($row['weapons']) : 'NULL' ?></td>
+                        <td><?= $row['zombie_types'] !== null ? htmlspecialchars($row['zombie_types']) : 'NULL' ?></td>
+                        <td><?= $row['observation'] !== null && $row['observation'] !== '' ? htmlspecialchars($row['observation']) : 'NULL' ?></td>
                     </tr>
                 <?php endforeach; ?>
             <?php else: ?>
                 <tr>
-                    <td colspan="7">Añade algo primero uwu</td>
+                    <td colspan="7">add something first uwu</td>
                 </tr>
             <?php endif; ?>
         </tbody>
