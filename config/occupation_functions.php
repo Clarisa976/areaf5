@@ -32,6 +32,15 @@ function occupationTypeExistsInPost($pdo, $postId, $occupationType)
     $row = $stmt->fetch();
     return $row && (int)$row["total"] > 0;
 }
+// check if a WLF character is already assigned to another post
+function wlfCharacterExistsInAnotherPost($pdo, $characterName)
+{
+    $sql = "SELECT p.location FROM occupations o JOIN posts p ON o.post_id = p.id_posts WHERE o.occupation_type = 'WLF' AND o.character_name = :character_name";
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute([":character_name" => $characterName]);
+    $row = $stmt->fetch();
+    return $row ? $row["location"] : null;
+}
 // create occupations and their related zombie types or weapons
 /*
 $occupationType will be 'WLF','SERAPHITES' or 'INFECTED_NEST'
