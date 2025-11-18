@@ -15,7 +15,7 @@ require_once __DIR__ . "/../config/occupation_functions.php";
 
 // load summary rows form the view
 try {
-    $rows = loadSummaryRows($pdo);
+    $result = loadSummaryRows($pdo);
 } catch (\PDOException $e) {
     die("Database query failed: " . $e->getMessage());
 }
