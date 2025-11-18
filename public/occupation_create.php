@@ -21,10 +21,10 @@ $wlfCharacters = ["Abby", "Manny", "Nora", "Mel", "Owen", "Isaac", "Jordan", "Le
 
 // zombie types options
 $zombieTypeOptions = [
-    "RUNNER" => "Runners",
-    "STALKER" => "Stalkers",
-    "CLICKER" => "Clickers",
-    "BLOATER" => "Bloaters",
+    "RUNNERS" => "Runners",
+    "STALKERS" => "Stalkers",
+    "CLICKERS" => "Clickers",
+    "BLOATERS" => "Bloaters",
     "RAT_KING" => "Rat King"
 ];
 
