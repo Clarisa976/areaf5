@@ -9,7 +9,6 @@ $dotenv->safeLoad();
 require_once __DIR__ . "/../config/db.php";
 require_once __DIR__ . "/../config/occupation_functions.php";
 
-// load posts for selection
 try {
     $posts = loadPosts($pdo);
 } catch (\PDOException $e) {
@@ -29,7 +28,6 @@ $zombieTypeOptions = [
 ];
 
 $errors = [];
-
 function addError(array &$errors, string $field, string $message): void
 {
     if (!isset($errors[$field])) {
@@ -37,7 +35,6 @@ function addError(array &$errors, string $field, string $message): void
     }
     $errors[$field][] = $message;
 }
-
 // default
 $postId = $_POST["post_id"] ?? "";
 $occupationType = $_POST["occupation_type"] ?? "";
@@ -46,34 +43,85 @@ $weaponsText = trim($_POST["weapons"] ?? "");
 $selectedZombies = isset($_POST["zombie_types"]) ? (array)$_POST["zombie_types"] : [];
 $observation = trim($_POST["observation"] ?? "");
 
-$isEdit = false;
-$formTitle = "Create Occupation";
-$submitLabel = "Save occupation";
+$isEdit = true;
+$formTitle = "Edit occupation";
+$submitLabel = "Update occupation";
 
-if (isset($_POST["save"]) && !isset($_POST["update_type"])) {
-    // validations
+if (!isset($_POST['save']) && !isset($_POST['update_type'])) {
+    if (!isset($_GET['id'])) {
+        header("Location: index.php");
+        exit();
+    }
+
+    $occupationId = (int)$_GET['id'];
+    if ($occupationId <= 0) {
+        header("Location: index.php");
+        exit();
+    }
+
+    try {
+        $details = getOccupationWithDetails($pdo, $occupationId);
+    } catch (PDOException $e) {
+        die("Error loading occupation: " . $e->getMessage());
+    }
+
+    if (!$details) {
+        header("Location: index.php");
+        exit();
+    }
+
+    $postId = $details['post_id'];
+    $occupationType = $details['occupation_type'];
+    $characterName = $details['character_name'] ?? "";
+    $weaponsText = !empty($details['weapons']) ? implode(", ", $details['weapons']) : "";
+    $selectedZombies = $details['zombie_types'];
+    $observation = $details['observation'] ?? "";
+
+
+} elseif (isset($_POST['update_type'])) {
+    $occupationId = isset($_POST['occupation_id']) ? (int)$_POST['occupation_id'] : 0;
+    $postId = $_POST["post_id"] ?? "";
+    $occupationType = $_POST["occupation_type"] ?? "";
+    $characterName = trim($_POST["character_name"] ?? "");
+    $weaponsText = trim($_POST["weapons"] ?? "");
+    $selectedZombies = isset($_POST["zombie_types"]) ? (array)$_POST["zombie_types"] : [];
+    $observation = trim($_POST["observation"] ?? "");
+
+    if ($occupationId <= 0) {
+        header("Location: index.php");
+        exit();
+    }
+
+} else {
+    
+    $occupationId = isset($_POST['occupation_id']) ? (int)$_POST['occupation_id'] : 0;
+    $postId = $_POST["post_id"] ?? "";
+    $occupationType = $_POST["occupation_type"] ?? "";
+    $characterName = trim($_POST["character_name"] ?? "");
+    $weaponsText = trim($_POST["weapons"] ?? "");
+    $selectedZombies = isset($_POST["zombie_types"]) ? (array)$_POST["zombie_types"] : [];
+    $observation = trim($_POST["observation"] ?? "");
+
+    if ($occupationId <= 0) {
+        header("Location: index.php");
+        exit();
+    }
+
+
+
     if ($postId === "") {
         addError($errors, "post_id", "Post is required.");
     } else {
-        $validPostIds = array_column($posts, "id_posts");
+        $validPostIds = array_column($posts, 'id_posts');
         if (!in_array($postId, $validPostIds)) {
             addError($errors, "post_id", "Selected post is invalid.");
         }
     }
-    
+
     if ($occupationType === "") {
         addError($errors, "occupation_type", "Occupation type is required.");
-    } else {
-        if ($postId !== "") {
-            try {
-                if (occupationTypeExistsInPost($pdo, $postId, $occupationType)) {
-                    addError($errors, "occupation_type", "This post already has an occupation of this type. Each post can only have one occupation of each type.");
-                }
-            } catch (PDOException $e) {
-                addError($errors, "general", 'Error checking occupation type: ' . $e->getMessage());
-            }
-        }
     }
+
 
     if ($occupationType === "WLF") {
         if ($characterName === "") {
@@ -89,6 +137,7 @@ if (isset($_POST["save"]) && !isset($_POST["update_type"])) {
             }
         }
     }
+
 
     $weaponsArray = [];
     if ($occupationType === "SERAPHITES") {
@@ -118,8 +167,8 @@ if (isset($_POST["save"]) && !isset($_POST["update_type"])) {
         } else {
             if (in_array("RAT_KING", $selectedZombies)) {
                 try {
-                    $ratKingCount = countRatKing($pdo);
-                    if ($ratKingCount >= 1) {
+                    $ratKingCount = countRatKingExcluding($pdo, $occupationId);
+                    if ($ratKingCount > 0) {
                         addError($errors, "zombie_types", "There's already a Rat King in the city, calm down.");
                     }
                 } catch (PDOException $e) {
@@ -131,22 +180,12 @@ if (isset($_POST["save"]) && !isset($_POST["update_type"])) {
 
     if (empty($errors)) {
         try {
-            if ($occupationType === 'WLF') {
-                $weaponsArray = [];
-                $selectedZombies = [];
-            } elseif ($occupationType === 'SERAPHITES') {
-                $characterName = null;
-                $selectedZombies = [];
-            } elseif ($occupationType === 'INFECTED_NEST') {
-                $characterName = null;
-                $weaponsArray = [];
-            }
-            
-            createOccupationGroup($pdo, $postId, $occupationType, $characterName, $weaponsArray, $selectedZombies, $observation);
+            updateOccupation($pdo, $occupationId, $postId, $occupationType, $characterName, $weaponsArray, $selectedZombies, $observation);
+
             header("Location: index.php");
             exit();
         } catch (PDOException $e) {
-            $errors[] = 'Error creating occupation: ' . $e->getMessage();
+            addError($errors, "general", 'Error updating occupation: ' . $e->getMessage());
         }
     }
 }

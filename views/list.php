@@ -16,6 +16,24 @@
             margin: 10px 0;
         }
 
+        .actions {
+            margin: 20px 0;
+        }
+
+        .actions button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        .actions button:hover {
+            background-color: #45a049;
+        }
+
         table {
             width: 100%;
             border-collapse: collapse;
@@ -31,6 +49,46 @@
 
         th {
             background-color: #e4d0d0ff;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 5px;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .action-buttons button {
+            padding: 6px 12px;
+            border: none;
+            border-radius: 3px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        .btn-edit {
+            background-color: #2196F3;
+            color: white;
+        }
+
+        .btn-edit:hover {
+            background-color: #0b7dda;
+        }
+
+        .btn-delete {
+            background-color: #f44336;
+            color: white;
+        }
+
+        .btn-delete:hover {
+            background-color: #da190b;
+        }
+
+        .empty-message {
+            text-align: center;
+            padding: 20px;
+            font-style: italic;
+            color: #666;
         }
     </style>
 </head>
@@ -53,7 +111,9 @@
                 <th>Armas</th>
                 <th>Tipo de zombie</th>
                 <th>Observaciones</th>
-                <th>Acciones</th>
+                <?php if (!empty($result)): ?>
+                    <th>Acciones</th>
+                <?php endif; ?>
             </tr>
         </thead>
         <tbody>
@@ -68,6 +128,10 @@
                         <td><?= $row['zombie_types'] !== null ? htmlspecialchars($row['zombie_types']) : 'NULL' ?></td>
                         <td><?= $row['observation'] !== null && $row['observation'] !== '' ? htmlspecialchars($row['observation']) : 'NULL' ?></td>
                         <td>
+                            <form method="get" action="occupation_edit.php" style="display:inline-block;">
+                                <input type="hidden" name="id" value="<?php echo (int)$row['occupation_id']; ?>">
+                                <button type="submit">Edit</button>
+                            </form>
                             <form method="post" action="occupation_delete.php"
                                 onsubmit="return confirm('Do you really want to delete this occupation?');">
                                 <input type="hidden" name="occupation_id"
@@ -79,7 +143,7 @@
                 <?php endforeach; ?>
             <?php else: ?>
                 <tr>
-                    <td colspan="7">add something first uwu</td>
+                    <td colspan="7" class="empty-message">add something first uwu</td>
                 </tr>
             <?php endif; ?>
         </tbody>
