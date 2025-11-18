@@ -41,6 +41,9 @@
         <form method="get" action="occupation_create.php">
             <button type="submit">Create new occupation</button>
         </form>
+        <form method="get" action="export_csv.php">
+            <button type="submit">Export CSV</button>
+        </form>
     </div>
 
     <table>
