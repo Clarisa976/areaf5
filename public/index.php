@@ -10,11 +10,12 @@ $dotenv->load();
 // include the database configuration file
 require_once __DIR__ . "/../config/db.php";
 
-// test the database connection
+// helper functions
+require_once __DIR__ . "/../config/occupation_functions.php";
+
+// load summary rows form the view
 try {
-    $sql = "SELECT post_number, location, occupation_type, name, weapons, zombie_types, observation FROM v_post_summary ORDER BY post_number, occupation_type";
-    $stmt = $pdo->query($sql);
-    $result = $stmt->fetchAll();
+    $rows = loadSummaryRows($pdo);
 } catch (\PDOException $e) {
     die("Database query failed: " . $e->getMessage());
 }
