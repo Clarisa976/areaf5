@@ -1,0 +1,8 @@
+"Post Number",Location,"Occupation Type","Character Name",Weapons,"Zombie Types",Observation
+2,"Hospital de Seattle",WLF,Mel,NULL,NULL,"Con nausias"
+4,Hillcrest,Serafitas,NULL,"[""machete""]",NULL,"grupo de gente feliz"
+5,Acuario,WLF,Owen,NULL,NULL,"Busca un regalo para su hijo"
+6,"Túneles del metro","Nido infectado",NULL,NULL,"[""Runners"",""Clickers""]","Sitio para pasar el rato"
+7,"Barrio de Capitol Hill","Nido infectado",NULL,NULL,"[""Rat King""]",
+7,"Barrio de Capitol Hill",Serafitas,NULL,"[""arco"",""lanza"",""piedras""]",NULL,"grupo con mala suerte"
+8,Colegio,WLF,Manny,NULL,NULL,"Mi primo"
